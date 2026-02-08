@@ -1,0 +1,201 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Premium dark luxury theme for Clyro Tech Solutions */
+@layer base {
+  :root {
+    /* Deep black & dark grays - luxury background */
+    --background: 0 0% 5%;
+    --foreground: 0 0% 95%;
+    
+    /* Glass cards with subtle dark tint */
+    --card: 240 10% 12%;
+    --card-foreground: 0 0% 95%;
+    
+    --popover: 240 10% 12%;
+    --popover-foreground: 0 0% 95%;
+    
+    /* Primary - white for clean text */
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 5%;
+    
+    /* Secondary - dark gray for subtle elements */
+    --secondary: 240 10% 20%;
+    --secondary-foreground: 0 0% 95%;
+    
+    /* Muted - faint elements */
+    --muted: 240 10% 18%;
+    --muted-foreground: 0 0% 60%;
+    
+    /* Accent - electric blue to purple gradient primary */
+    --accent: 210 100% 55%;
+    --accent-foreground: 0 0% 98%;
+    
+    /* Accent purple */
+    --accent-purple: 280 85% 60%;
+    
+    /* Destructive - red accent */
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    
+    /* Borders - subtle light grays */
+    --border: 240 10% 18%;
+    --input: 240 10% 18%;
+    --ring: 210 100% 55%;
+    
+    /* Charts */
+    --chart-1: 210 100% 55%;
+    --chart-2: 280 85% 60%;
+    --chart-3: 340 80% 55%;
+    --chart-4: 180 70% 50%;
+    --chart-5: 30 90% 55%;
+    
+    /* Radius - large rounded corners */
+    --radius: 1rem;
+    
+    /* Glass effect - subtle blur tint */
+    --glass-bg: rgba(12, 14, 25, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.1);
+    
+    /* Glow effects */
+    --glow-blue: rgba(30, 150, 255, 0.3);
+    --glow-purple: rgba(168, 85, 247, 0.3);
+  }
+}
+
+@layer components {
+  /* Glassmorphism utility */
+  .glass {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+  }
+  
+  /* Glow on hover effect */
+  .glow-on-hover {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .glow-on-hover:hover {
+    border-color: rgba(30, 150, 255, 0.5);
+    box-shadow: 0 0 20px var(--glow-blue), inset 0 0 20px rgba(30, 150, 255, 0.1);
+  }
+  
+  /* Premium button with glow */
+  .btn-premium {
+    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300;
+    background: linear-gradient(135deg, #1e96ff, #a855f7);
+    color: white;
+    box-shadow: 0 8px 32px rgba(30, 150, 255, 0.2);
+  }
+  
+  .btn-premium:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(30, 150, 255, 0.3), 0 0 20px rgba(168, 85, 247, 0.2);
+  }
+  
+  .btn-premium:active {
+    transform: translateY(0);
+  }
+  
+  /* Outline button variant */
+  .btn-outline-premium {
+    @apply px-6 py-3 rounded-xl font-medium transition-all duration-300;
+    border: 1.5px solid var(--glass-border);
+    color: white;
+  }
+  
+  .btn-outline-premium:hover {
+    border-color: rgba(30, 150, 255, 0.5);
+    box-shadow: inset 0 0 20px rgba(30, 150, 255, 0.1), 0 0 20px var(--glow-blue);
+  }
+  
+  /* Text gradient */
+  .text-gradient {
+    @apply bg-gradient-to-r from-blue-400 via-purple-400 to-pink-300 bg-clip-text text-transparent;
+  }
+  
+  /* Subtle grain texture */
+  .grain {
+    position: relative;
+  }
+  
+  .grain::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' seed='1' /%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+  
+  /* Scroll animations */
+  .scroll-fade {
+    animation: scroll-fade 0.6s ease-out;
+  }
+  
+  @keyframes scroll-fade {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Backdrop blur utilities */
+  .backdrop-blur-xl {
+    backdrop-filter: blur(16px);
+  }
+  
+  /* Gradient text animation */
+  .gradient-animate {
+    background-size: 200% 200%;
+    animation: gradient-shift 6s ease infinite;
+  }
+  
+  @keyframes gradient-shift {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-background text-foreground;
+    background-attachment: fixed;
+  }
+  
+  /* Remove default form styling */
+  input, textarea, select {
+    @apply bg-secondary text-foreground rounded-lg border border-border;
+  }
+  
+  input::placeholder, textarea::placeholder {
+    @apply text-muted-foreground;
+  }
+}

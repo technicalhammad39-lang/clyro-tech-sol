@@ -1,0 +1,11 @@
+
+> my-project@0.1.0 dev
+> next dev --port 3005
+
+   ▲ Next.js 16.0.7 (Turbopack)
+   - Local:         http://localhost:3005
+   - Network:       http://169.254.73.5:3005
+
+ ✓ Starting...
+ ✓ Ready in 2.5s
+ ○ Compiling / ...
