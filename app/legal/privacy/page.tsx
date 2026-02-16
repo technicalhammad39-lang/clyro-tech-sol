@@ -10,11 +10,13 @@ import {
 } from "lucide-react"
 
 import { LegalPageLayout, type LegalSection } from "@/components/legal/legal-page-layout"
+import { buildPageMetadata } from "@/lib/seo"
 
-export const metadata = {
-  title: "Privacy Policy | Clyro Tech Solutions",
+export const metadata = buildPageMetadata({
+  title: "Privacy Policy",
   description: "Privacy policy outlining how Clyro Tech Solutions collects and uses your data.",
-}
+  path: "/privacy",
+})
 
 const sections: LegalSection[] = [
   {

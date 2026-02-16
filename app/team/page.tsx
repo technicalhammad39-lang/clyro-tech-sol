@@ -4,11 +4,13 @@ import { ArrowRight, BadgeCheck, Check, Handshake, Layers, Rocket, ShieldCheck, 
 
 import { teamMembers } from "@/lib/team"
 import { Badge } from "@/components/ui/badge"
+import { buildPageMetadata } from "@/lib/seo"
 
-export const metadata = {
-  title: "Team | Clyro Tech Solutions",
-  description: "Meet the partners behind Clyro Tech Solutions.",
-}
+export const metadata = buildPageMetadata({
+  title: "Team",
+  description: "Meet the partners behind Clyro Tech Solutions and the team delivering premium AI and automation builds.",
+  path: "/team",
+})
 
 const values = [
   {
@@ -72,6 +74,18 @@ export default function TeamPage() {
           </h1>
           <p className="text-sm md:text-base text-muted-foreground max-w-2xl mx-auto text-balance">
             Two partners, one standard: premium software that looks great, performs fast, and is built to scale.
+          </p>
+          <p className="mt-4 text-sm md:text-base text-muted-foreground max-w-2xl mx-auto text-balance">
+            Clyro Tech Solutions is a focused studio shipping AI automation, voice-first assistants, and high-end product
+            experiences for teams that want to move fast without sacrificing quality. Explore our{" "}
+            <Link className="text-primary hover:text-accent transition-colors" href="/services">
+              AI automation services
+            </Link>{" "}
+            or view the{" "}
+            <Link className="text-primary hover:text-accent transition-colors" href="/products">
+              latest product releases
+            </Link>
+            .
           </p>
         </section>
 

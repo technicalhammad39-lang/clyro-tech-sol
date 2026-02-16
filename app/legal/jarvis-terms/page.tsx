@@ -10,11 +10,13 @@ import {
 } from "lucide-react"
 
 import { LegalPageLayout, type LegalSection } from "@/components/legal/legal-page-layout"
+import { buildPageMetadata } from "@/lib/seo"
 
-export const metadata = {
-  title: "Jarvis AI - Terms & Conditions | Clyro Tech Solutions",
+export const metadata = buildPageMetadata({
+  title: "Jarvis AI Terms & Conditions",
   description: "Terms and conditions specific to Jarvis AI Voice Assistant product.",
-}
+  path: "/legal/jarvis-terms",
+})
 
 const sections: LegalSection[] = [
   {

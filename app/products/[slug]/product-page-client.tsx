@@ -3,7 +3,7 @@
 import { useState } from "react"
 import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { ArrowLeft, Check, ChevronLeft, ChevronRight, Star } from "lucide-react"
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Crown, Sparkles, Star } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Product } from "@/lib/products"
 import {
@@ -15,9 +15,33 @@ import {
 import { buyViaWhatsApp } from "@/lib/whatsapp"
 import { ProductBadges } from "@/components/products/product-badges"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { ProductImage } from "@/components/ui/product-image"
 
+const relatedServices = [
+  { href: "/services/ai-automation", label: "workflow automation for businesses" },
+  { href: "/services/ai-chatbot-development", label: "AI chatbot development for websites" },
+  { href: "/services/voice-assistants", label: "voice assistant development" },
+  { href: "/services/graphic-design", label: "website design modern UI" },
+]
+
+const relatedProducts = [
+  { href: "/products/jarvis-ai", label: "Jarvis AI Voice Assistant" },
+  { href: "/products/ai-chatbot", label: "AI Chatbot Pro" },
+  { href: "/products/saas-dashboard", label: "SaaS Dashboard Kit" },
+]
+
 export function ProductPageClient({ product, from }: { product: Product; from?: string }) {
+  const isJarvis = product.slug === "jarvis-ai" && (product.tieredOffers?.length ?? 0) > 0
+
+  if (isJarvis) {
+    return <JarvisProductPage product={product} from={from} />
+  }
+
+  return <DefaultProductPage product={product} from={from} />
+}
+
+function DefaultProductPage({ product, from }: { product: Product; from?: string }) {
   const searchParams = useSearchParams()
   const source = from ?? searchParams.get("from") ?? "products"
 
@@ -262,6 +286,8 @@ export function ProductPageClient({ product, from }: { product: Product; from?: 
         </section>
       )}
 
+      <RelatedLinksSection />
+
       {/* Final CTA */}
       <section className="max-w-7xl mx-auto px-6">
         <div className="p-8 lg:p-12 rounded-2xl glass-strong text-center">
@@ -290,5 +316,328 @@ export function ProductPageClient({ product, from }: { product: Product; from?: 
         </div>
       </section>
     </main>
+  )
+}
+
+function JarvisProductPage({ product, from }: { product: Product; from?: string }) {
+  const searchParams = useSearchParams()
+  const source = from ?? searchParams.get("from") ?? "products"
+  const backLink = source === "ai-lab" ? "/ai-lab" : "/products"
+  const backLabel = source === "ai-lab" ? "Back to AI Lab" : "Back to Products"
+  const tiers = product.tieredOffers ?? []
+  const pricingNote = product.pricingNote ?? "Current prices are discounted and may increase with future updates."
+  const updatePolicy = product.updatePolicy ?? "Free updates for the purchased version."
+
+  const [selectedScreenshot, setSelectedScreenshot] = useState(0)
+  const formatPKR = (value: number) => `PKR ${value.toLocaleString("en-PK")}`
+
+  const openWhatsApp = (tier: (typeof tiers)[number], type: "app" | "source") => {
+    const price =
+      type === "app" ? formatPKR(tier.app_price_pkr) : formatPKR(tier.source_price_pkr)
+    const itemName = `${product.name} - ${tier.name} (${tier.versionLabel})`
+    buyViaWhatsApp({
+      name: itemName,
+      category: product.category,
+      pricePKR: price,
+      type: type === "app" ? "app-only" : "source-code",
+    })
+  }
+
+  return (
+    <main className="min-h-screen pt-20 pb-20">
+      <div className="max-w-7xl mx-auto px-6 py-4">
+        <Link
+          href={backLink}
+          className="inline-flex items-center gap-2 text-sm text-primary hover:text-accent transition-colors"
+        >
+          <ArrowLeft className="w-4 h-4" />
+          {backLabel}
+        </Link>
+      </div>
+
+      <section className="max-w-7xl mx-auto px-6 mb-8">
+        <div className="flex flex-wrap items-center gap-2 mb-4">
+          <Badge className="glass border-border/50 bg-secondary/40 text-muted-foreground">{product.category}</Badge>
+          <ProductBadges badges={product.badges} orientation="row" />
+          <Badge className="border-primary/30 bg-primary/10 text-primary">Limited-time discount</Badge>
+        </div>
+        <h1 className="text-3xl lg:text-5xl font-semibold text-foreground">Jarvis AI Voice Assistant</h1>
+        <p className="mt-3 text-lg text-muted-foreground max-w-3xl">
+          Premium voice-first automation for your entire workstation. Choose the version that fits your workflow and
+          scale.
+        </p>
+      </section>
+
+      {product.demoVideoUrl && (
+        <section className="max-w-7xl mx-auto px-6 mb-12">
+          <div className="relative rounded-2xl overflow-hidden aspect-video glass-strong border border-border/50 bg-gradient-to-br from-primary/10 to-accent/10">
+            <iframe src={product.demoVideoUrl} title={`${product.name} demo`} className="w-full h-full" allowFullScreen />
+          </div>
+        </section>
+      )}
+
+      <section className="max-w-7xl mx-auto px-6 mb-12">
+        <div className="md:hidden sticky top-20 z-30 -mx-6 px-6 py-3 bg-background/80 backdrop-blur border-b border-border/40">
+          <div className="flex gap-2 overflow-x-auto">
+            {tiers.map((tier) => (
+              <a
+                key={tier.key}
+                href={`#tier-${tier.key}`}
+                className="rounded-full border border-border/60 bg-secondary/40 px-4 py-2 text-xs font-medium text-muted-foreground whitespace-nowrap"
+              >
+                {tier.versionLabel.toUpperCase()} {tier.name}
+              </a>
+            ))}
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          {tiers.map((tier) => (
+            <div
+              key={tier.key}
+              id={`tier-${tier.key}`}
+              className={cn(
+                "relative rounded-3xl border border-border/60 glass-strong p-6 transition-all hover:-translate-y-1 hover:shadow-[0_30px_80px_rgba(0,0,0,0.25)]",
+                tier.recommended && "border-primary/40 bg-gradient-to-b from-primary/10 to-transparent"
+              )}
+            >
+              {tier.recommended && (
+                <div className="absolute right-5 top-5 inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/15 px-3 py-1 text-[10px] uppercase tracking-[0.2em] text-primary">
+                  <Crown className="h-3 w-3" />
+                  Recommended
+                </div>
+              )}
+              <div className="text-xs uppercase tracking-[0.3em] text-muted-foreground">{tier.versionLabel}</div>
+              <h3 className="mt-2 text-xl font-semibold text-foreground">{tier.name}</h3>
+              <div className="mt-4 space-y-2">
+                {tier.highlights.map((item) => (
+                  <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                    <Check className="h-4 w-4 text-primary mt-0.5" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-6 rounded-2xl border border-border/50 bg-secondary/30 p-4">
+                <div className="text-xs uppercase tracking-[0.25em] text-muted-foreground">App</div>
+                <div className="text-2xl font-semibold text-foreground">{formatPKR(tier.app_price_pkr)}</div>
+                <div className="mt-2 text-xs uppercase tracking-[0.25em] text-muted-foreground">Source Code</div>
+                <div className="text-2xl font-semibold text-foreground">{formatPKR(tier.source_price_pkr)}</div>
+                <p className="mt-2 text-xs text-muted-foreground">{pricingNote}</p>
+              </div>
+
+              <div className="mt-5 grid gap-2">
+                <Button className="rounded-full gradient-bg text-foreground hover:opacity-90" onClick={() => openWhatsApp(tier, "app")}>
+                  Buy App
+                </Button>
+                <Button variant="secondary" className="rounded-full" onClick={() => openWhatsApp(tier, "source")}>
+                  Buy Source Code
+                </Button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 mb-12">
+        <div className="grid gap-6 lg:grid-cols-2">
+          <div className="rounded-3xl glass-strong border border-border/50 p-6">
+            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              <Sparkles className="h-4 w-4 text-primary" />
+              What you get (App)
+            </div>
+            <div className="mt-4 space-y-2">
+              {(product.appIncludes ?? []).map((item) => (
+                <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Check className="h-4 w-4 text-primary mt-0.5" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="rounded-3xl glass-strong border border-border/50 p-6">
+            <div className="flex items-center gap-2 text-xs uppercase tracking-[0.2em] text-muted-foreground">
+              <Sparkles className="h-4 w-4 text-primary" />
+              What you get (Source Code)
+            </div>
+            <div className="mt-4 space-y-2">
+              {(product.sourceIncludes ?? []).map((item) => (
+                <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <Check className="h-4 w-4 text-primary mt-0.5" />
+                  <span>{item}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 mb-12">
+        <div className="rounded-3xl glass-strong border border-border/50 p-6">
+          <h3 className="text-lg font-semibold text-foreground">Free Updates Policy</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            {updatePolicy} Upgrade to a higher version is separate.
+          </p>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 mb-12">
+        <div className="rounded-3xl glass-strong border border-border/50 p-6">
+          <h3 className="text-lg font-semibold text-foreground">Licensing & Usage</h3>
+          <div className="mt-4 grid gap-2 md:grid-cols-2">
+            {(product.licenseSummary ?? []).map((item) => (
+              <div key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
+                <Check className="h-4 w-4 text-primary mt-0.5" />
+                <span>{item}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 mb-12">
+        <h3 className="text-lg font-semibold text-foreground mb-4">Tech Stack</h3>
+        <div className="flex flex-wrap gap-2">
+          {product.techStack.map((tech) => (
+            <span key={tech} className="rounded-full border border-border/60 bg-secondary/40 px-3 py-1 text-xs text-foreground">
+              {tech}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      <section className="max-w-7xl mx-auto px-6 mb-12">
+        <h3 className="text-lg font-semibold text-foreground mb-4">FAQ</h3>
+        <div className="grid gap-4 md:grid-cols-2">
+          {(product.faq ?? []).map((item) => (
+            <div key={item.question} className="rounded-2xl border border-border/50 bg-secondary/30 p-5">
+              <p className="text-sm font-semibold text-foreground">{item.question}</p>
+              <p className="mt-2 text-sm text-muted-foreground">{item.answer}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {product.features && product.features.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 mb-12">
+          <h2 className="text-2xl font-bold mb-6">Key Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+            {product.features.map((feature) => (
+              <div key={feature} className="p-4 rounded-lg glass flex items-start gap-3">
+                <Check className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
+                <span className="text-sm text-foreground">{feature}</span>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {product.screenshots.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 mb-12">
+          <h2 className="text-2xl font-bold mb-6">Screenshots</h2>
+          <div className="space-y-4">
+            <div className="relative rounded-xl overflow-hidden aspect-video bg-secondary/20 glass">
+              <ProductImage
+                src={product.screenshots[selectedScreenshot]}
+                alt={`Screenshot ${selectedScreenshot + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </div>
+
+            {product.screenshots.length > 1 && (
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => setSelectedScreenshot(Math.max(0, selectedScreenshot - 1))}
+                  disabled={selectedScreenshot === 0}
+                  className="p-2 rounded-lg glass hover:bg-secondary/50 disabled:opacity-30 transition-all"
+                >
+                  <ChevronLeft className="w-4 h-4" />
+                </button>
+
+                <div className="flex-1 flex gap-2 overflow-x-auto pb-2">
+                  {product.screenshots.map((screenshot, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() => setSelectedScreenshot(idx)}
+                      className={cn(
+                        "relative flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden border-2 transition-all",
+                        selectedScreenshot === idx ? "border-primary scale-105" : "border-border hover:border-muted-foreground"
+                      )}
+                    >
+                      <ProductImage src={screenshot} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                    </button>
+                  ))}
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => setSelectedScreenshot(Math.min(product.screenshots.length - 1, selectedScreenshot + 1))}
+                  disabled={selectedScreenshot === product.screenshots.length - 1}
+                  className="p-2 rounded-lg glass hover:bg-secondary/50 disabled:opacity-30 transition-all"
+                >
+                  <ChevronRight className="w-4 h-4" />
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
+      )}
+
+      {product.reviews && product.reviews.length > 0 && (
+        <section className="max-w-7xl mx-auto px-6 mb-12">
+          <h2 className="text-2xl font-bold mb-6">Customer Reviews</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {product.reviews.map((review) => (
+              <div key={review.author} className="p-5 rounded-lg glass">
+                <div className="flex items-center gap-0.5 mb-3">
+                  {[...Array(review.rating)].map((_, i) => (
+                    <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-sm text-foreground mb-4 leading-relaxed">{review.text}</p>
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold">{review.author}</span>
+                  <span className="text-muted-foreground">{review.date}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Direct WhatsApp purchase flow on tier buttons */}
+      <RelatedLinksSection />
+    </main>
+  )
+}
+
+function RelatedLinksSection() {
+  return (
+    <section className="max-w-7xl mx-auto px-6 mb-12">
+      <div className="grid gap-4 md:grid-cols-2">
+        <div className="rounded-3xl border border-border/50 glass-strong p-6">
+          <h3 className="text-lg font-semibold text-foreground">Related services</h3>
+          <div className="mt-4 space-y-3 text-sm text-muted-foreground">
+            {relatedServices.map((item) => (
+              <Link key={item.href} href={item.href} className="block hover:text-primary transition-colors">
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+        <div className="rounded-3xl border border-border/50 glass-strong p-6">
+          <h3 className="text-lg font-semibold text-foreground">Related products</h3>
+          <div className="mt-4 space-y-3 text-sm text-muted-foreground">
+            {relatedProducts.map((item) => (
+              <Link key={item.href} href={item.href} className="block hover:text-primary transition-colors">
+                {item.label}
+              </Link>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
   )
 }

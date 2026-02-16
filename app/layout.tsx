@@ -1,33 +1,40 @@
 import React from "react"
 import type { Metadata, Viewport } from "next"
+import { Space_Grotesk } from "next/font/google"
 
 import "@/styles/globals.css"
 import { RootShell } from "@/components/layout/root-shell"
 import { Toaster } from "@/components/ui/sonner"
+import { SITE_NAME, buildOrganizationSchema, buildWebsiteSchema, getSiteUrl } from "@/lib/seo"
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin"],
+  variable: "--font-sans",
+  display: "swap",
+})
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://clyrotechsol.site"),
+  metadataBase: new URL("https://www.clyrotechsol.site"),
   title: {
     default: "Clyro Tech Solutions | Premium AI Software & Development",
     template: "%s | Clyro Tech Solutions",
   },
   description:
-    "Clyro Tech Solutions delivers premium AI software, apps & source code ready to launch. Expert AI development, SaaS products, custom web & mobile app development.",
+    "Clyro Tech Solutions builds premium AI software, automation systems, and digital products ready to launch. From AI chatbot development to workflow automation, we ship fast and polish the details.",
   keywords: [
     "Clyro Tech Solutions",
     "Clyro Tech",
-    "AI software development",
-    "SaaS development company",
-    "custom software development",
-    "AI tools",
-    "web development",
-    "mobile app development",
-    "source code marketplace",
-    "premium software solutions",
+    "AI automation services",
+    "workflow automation for businesses",
+    "AI chatbot development for websites",
+    "voice assistant development",
+    "custom AI assistant for business",
+    "electron desktop app development",
+    "Gemini API integration services",
   ],
-  authors: [{ name: "Clyro Tech Solutions" }],
-  creator: "Clyro Tech Solutions",
-  publisher: "Clyro Tech Solutions",
+  authors: [{ name: SITE_NAME }],
+  creator: SITE_NAME,
+  publisher: SITE_NAME,
   robots: {
     index: true,
     follow: true,
@@ -42,8 +49,8 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://clyrotechsol.site",
-    siteName: "Clyro Tech Solutions",
+    url: "https://www.clyrotechsol.site",
+    siteName: SITE_NAME,
     title: "Clyro Tech Solutions | Premium AI Software & Development",
     description:
       "Premium AI software, apps & source code ready to launch. High-performance AI tools, SaaS products, websites, and custom development solutions.",
@@ -66,11 +73,12 @@ export const metadata: Metadata = {
     images: ["/twitter-image.jpg"],
   },
   alternates: {
-    canonical: "https://clyrotechsol.site",
+    canonical: "https://www.clyrotechsol.site",
   },
   icons: {
     icon: "/favicon.png",
     shortcut: "/favicon.png",
+    apple: "/clyro-official-logo.png",
   },
 }
 
@@ -86,46 +94,8 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const organizationSchema = {
-    "@context": "https://schema.org",
-    "@type": "Organization",
-    name: "Clyro Tech Solutions",
-    alternateName: "Clyro Tech",
-    url: "https://clyrotechsol.site",
-    logo: "https://clyrotechsol.site/clyro-official-logo.png",
-    description:
-      "Premium AI software development company specializing in SaaS products, custom web and mobile applications, and AI-powered solutions.",
-    email: "clyrotech1@gmail.com",
-    sameAs: [
-      "https://x.com/clyrotech",
-      "https://youtube.com/@clyrotechsolutions",
-      "https://instagram.com/clyrotechpk",
-      "https://facebook.com/clyrotech",
-    ],
-    address: {
-      "@type": "Hasilpur, Punjab",
-      addressCountry: "Pakistan",
-    },
-    founder: {
-      "@type": "Organization",
-      name: "Clyro Tech Solutions",
-    },
-  }
-
-  const websiteSchema = {
-    "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Clyro Tech Solutions",
-    url: "https://clyrotechsol.site",
-    potentialAction: {
-      "@type": "SearchAction",
-      target: {
-        "@type": "EntryPoint",
-        urlTemplate: "https://clyrotechsol.site/products?search={search_term_string}",
-      },
-      "query-input": "required name=search_term_string",
-    },
-  }
+  const organizationSchema = buildOrganizationSchema()
+  const websiteSchema = buildWebsiteSchema()
 
   return (
     <html lang="en">
@@ -139,7 +109,7 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
       </head>
-      <body className="font-sans antialiased min-h-screen bg-background text-foreground">
+      <body className={`${spaceGrotesk.variable} font-sans antialiased min-h-screen bg-background text-foreground`}>
         <RootShell>{children}</RootShell>
         <Toaster richColors position="top-right" />
       </body>

@@ -5,6 +5,21 @@ export type ProductType = "tool" | "level"
 
 export type ProductBadge = "featured" | "popular" | "new" | "bestseller"
 
+export interface ProductTier {
+  key: "v1" | "v2" | "v3"
+  name: string
+  versionLabel: string
+  app_price_pkr: number
+  source_price_pkr: number
+  highlights: string[]
+  recommended?: boolean
+}
+
+export interface ProductFAQ {
+  question: string
+  answer: string
+}
+
 export interface Review {
   author: string
   rating: number
@@ -46,6 +61,15 @@ export interface Product {
   reviews?: Review[]
   capabilities?: string[]
   isPublished?: boolean
+
+  // Optional Jarvis-only upgrade fields
+  tieredOffers?: ProductTier[]
+  pricingNote?: string
+  updatePolicy?: string
+  licenseSummary?: string[]
+  appIncludes?: string[]
+  sourceIncludes?: string[]
+  faq?: ProductFAQ[]
 }
 
 const KEBAB_CASE_REGEX = /^[a-z0-9]+(?:-[a-z0-9]+)*$/
@@ -125,28 +149,28 @@ export const products: Product[] = [
     badges: ["featured", "bestseller"],
     name: "Jarvis AI Voice Assistant",
     shortDescription:
-      "24/7 voice-powered AI assistant that runs continuously on your computer. Control everything with voice commands — no clicking required.",
+      "24/7 voice-powered AI assistant that runs continuously on your computer. Control everything with voice commands -- no clicking required.",
     longDescription:
-      "Jarvis AI is an advanced voice-powered assistant that runs 24/7 on your computer without interruption. It's available in multiple versions designed for different needs and budgets. Whether you're a student automating your workflow, a business owner streamlining operations, or a professional looking for hands-free productivity, Jarvis adapts to your needs. Simply purchase the version that fits your requirements, and you'll receive exactly that version with its specific features.",
+      "Jarvis AI is an advanced voice-powered assistant that runs 24/7 on your computer without interruption. It is available in multiple versions designed for different needs and budgets. Whether you're a student automating your workflow, a business owner streamlining operations, or a professional looking for hands-free productivity, Jarvis adapts to your needs. Choose the version that fits your requirements, and you'll receive exactly that version with its specific features.",
     ...buildProductAssets("jarvis-ai", 4),
     thumbnail: "/jarvis-ai.jpeg",
     category: "AI Tools",
-    techStack: ["Python", "PyTorch", "TensorFlow", "OpenAI API", "React", "WebSocket", "Node.js"],
+    techStack: ["Python", "React", "Electron", "Node.js", "WebSockets", "Gemini API", "LiveKit"],
     pricing: { kind: "range", usd: { min: 15, max: 279 }, pkr: { min: 3000, max: 51999 } },
     demoVideoUrl: "https://www.youtube.com/embed/Mc2_eJDTQRo",
     features: [
-      "Voice control your entire computer — open apps, close programs, control everything",
-      "Browser automation — open websites, manage tabs, automate tasks on any website",
-      "WhatsApp automation — send messages and automate replies",
-      "Reminders & scheduling — set reminders, notes, and manage your calendar",
-      "File finder — search and locate any file across your entire system",
-      "PC control — lock your computer, shut down, adjust volume and brightness",
-      "Live camera monitoring — security monitoring and ask questions by showing objects to camera",
-      "Smart home control — manage lights, fans, and other connected devices",
-      "AI memory — learns from you and remembers conversations for better responses",
-      "Visual explanations — understands things through diagrams and visual examples",
-      "Advanced GUI — smooth animations and modern, sleek interface",
-      "Live news display — stay updated with real-time news feed",
+      "Voice control your entire computer -- open apps, close programs, control everything",
+      "Browser automation -- open websites, manage tabs, automate tasks on any website",
+      "WhatsApp automation -- send messages and automate replies",
+      "Reminders & scheduling -- set reminders, notes, and manage your calendar",
+      "File finder -- search and locate any file across your entire system",
+      "PC control -- lock your computer, shut down, adjust volume and brightness",
+      "Live camera monitoring -- security monitoring and ask questions by showing objects to camera",
+      "Smart home control -- manage lights, fans, and other connected devices",
+      "AI memory -- learns from you and remembers conversations for better responses",
+      "Visual explanations -- understands things through diagrams and visual examples",
+      "Advanced GUI -- smooth animations and modern, sleek interface",
+      "Live news display -- stay updated with real-time news feed",
     ],
     whatYouGet: [
       "Full source code with documentation",
@@ -159,14 +183,113 @@ export const products: Product[] = [
     ],
     capabilities: [
       "Complete hands-free computer control using only your voice",
-      "Automates repetitive tasks — no manual work needed",
+      "Automates repetitive tasks -- no manual work needed",
       "Works with any website or application installed on your PC",
       "Camera monitoring for home security and object recognition",
-      "Intelligent memory — learns your preferences and habits",
-      "Smart home integration — control IoT devices seamlessly",
+      "Intelligent memory -- learns your preferences and habits",
+      "Smart home integration -- control IoT devices seamlessly",
       "Real-time responses without delays or interruptions",
       "Available in multiple versions for different user needs",
       "Perfect for students, business owners, and professionals",
+    ],
+    tieredOffers: [
+      {
+        key: "v1",
+        name: "Starter",
+        versionLabel: "v1",
+        app_price_pkr: 1500,
+        source_price_pkr: 1500,
+        highlights: [
+          "Core voice commands",
+          "Basic automation flows",
+          "Desktop app build",
+          "Essential UI controls",
+        ],
+      },
+      {
+        key: "v2",
+        name: "Pro",
+        versionLabel: "v2",
+        app_price_pkr: 3500,
+        source_price_pkr: 5000,
+        highlights: [
+          "Advanced workflows",
+          "Multi-task routines",
+          "Improved memory + context",
+          "Priority performance tuning",
+          "Recommended for teams",
+        ],
+        recommended: true,
+      },
+      {
+        key: "v3",
+        name: "Automation",
+        versionLabel: "v3",
+        app_price_pkr: 5900,
+        source_price_pkr: 10000,
+        highlights: [
+          "End-to-end automation",
+          "AI-driven scheduling",
+          "Extended integrations",
+          "Customizable pipelines",
+        ],
+      },
+    ],
+    pricingNote: "Current prices are discounted and may increase with future updates.",
+    updatePolicy: "Free updates for the purchased version.",
+    licenseSummary: [
+      "Personal or internal business use only.",
+      "Use on up to 2-3 devices per license.",
+      "Resale or redistribution is not allowed.",
+      "Sharing beyond the license scope may revoke access.",
+      "We may use technical measures to detect misuse.",
+      "Copyright remains with Clyro Tech Solutions.",
+    ],
+    appIncludes: [
+      "Prebuilt desktop app (for the selected version)",
+      "Installer + quick start guide",
+      "Configuration templates",
+      "Basic onboarding support",
+      "Access to updates for your version",
+    ],
+    sourceIncludes: [
+      "Full source code (client + server)",
+      "Setup guide and environment templates",
+      "Build scripts and deployment notes",
+      "Access to updates for your version",
+      "Commercial-ready structure",
+    ],
+    faq: [
+      {
+        question: "What is the difference between App and Source Code?",
+        answer:
+          "The App option gives you a ready-to-run build for the selected version. Source Code includes the full codebase so you can customize and deploy it yourself.",
+      },
+      {
+        question: "What is included in each tier?",
+        answer:
+          "Each tier upgrades automation depth and integrations. Starter is core commands, Pro adds advanced workflows, and Automation unlocks full end-to-end automation pipelines.",
+      },
+      {
+        question: "How do updates work?",
+        answer:
+          "Updates are free for the version you purchase. Moving to a higher tier requires a separate upgrade.",
+      },
+      {
+        question: "How many devices can I use?",
+        answer:
+          "Licenses cover up to 2-3 devices for personal or internal business use.",
+      },
+      {
+        question: "Can my license be revoked?",
+        answer:
+          "Yes. We may revoke licenses if the product is shared, resold, or used outside the license terms.",
+      },
+      {
+        question: "How do I purchase and receive delivery?",
+        answer:
+          "Use the Buy buttons to send a request. We confirm your tier and delivery details and share setup instructions.",
+      },
     ],
     reviews: [
       {

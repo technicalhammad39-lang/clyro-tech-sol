@@ -1,12 +1,13 @@
 import type { MetadataRoute } from "next"
 
 export default function robots(): MetadataRoute.Robots {
+  const siteUrl = "https://www.clyrotechsol.site"
   return {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/api/", "/admin/", "/ctsadmin/"],
+      disallow: ["/api/", "/admin/", "/ctsadmin/", "/drafts/"],
     },
-    sitemap: "https://clyrotechsol.site/sitemap.xml",
+    sitemap: `${siteUrl}/sitemap.xml`,
   }
 }

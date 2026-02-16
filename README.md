@@ -1,16 +1,18 @@
 ## Clyro Tech Solutions
 
 ### Run Steps
-1. Set environment variables in `.env.local`:
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-2. Install dependencies:
+1. Install dependencies:
    - `npm install`
-3. Seed legacy products:
-   - `npm run seed`
-4. Start dev server:
+2. Start dev server:
    - `npm run dev`
+3. Production build:
+   - `npm run build`
+
+### SEO QA Checklist
+- Verify the site in Google Search Console and submit `https://clyrotechsol.site/sitemap.xml`.
+- Run Rich Results Test on `/products` and a product detail page.
+- Target Lighthouse scores: 90+ Performance, 90+ SEO, 90+ Best Practices.
+- Request indexing for priority pages after major updates.
 
 ### Notes
-- `npm run seed` inserts products from `lib/products.ts` if they do not already exist.
+- Product data is managed in `lib/products.ts`.

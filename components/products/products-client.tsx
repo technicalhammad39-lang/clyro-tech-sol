@@ -73,7 +73,9 @@ export default function ProductsClient({ products }: ProductsClientProps) {
         <h1 className="text-3xl lg:text-4xl font-bold mb-2 text-foreground">
           <TypingText text="Clyro Products & Solutions" speed={45} delay={0} loop={false} className="gradient-text" />
         </h1>
-        <p className="text-muted-foreground">Production-ready AI tools & software solutions</p>
+        <p className="text-muted-foreground">
+          Production-ready AI tools, workflow automation, and productized software from Clyro Tech Solutions.
+        </p>
       </section>
 
       <section className="max-w-7xl mx-auto px-6 mb-8">
@@ -206,6 +208,84 @@ export default function ProductsClient({ products }: ProductsClientProps) {
           </>
         )}
       </section>
+
+      <section className="max-w-7xl mx-auto px-6 mt-16">
+        <div className="rounded-[2rem] border border-border/50 glass-strong p-8 lg:p-10">
+          <h2 className="text-2xl font-semibold text-foreground">FAQ</h2>
+          <p className="mt-2 text-sm text-muted-foreground max-w-2xl">
+            Quick answers about delivery, licensing, and how our AI products fit your business.
+          </p>
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            {[
+              {
+                q: "Do you offer AI automation services alongside these products?",
+                a: "Yes. Many teams start with a product and later request workflow automation for businesses or custom AI assistant for business needs.",
+              },
+              {
+                q: "Can I request WhatsApp chatbot development or AI customer support chatbot features?",
+                a: "Absolutely. We can extend select products or build custom solutions such as WhatsApp chatbot development and AI chatbot development for websites.",
+              },
+              {
+                q: "Do you serve clients in Pakistan?",
+                a: "Yes. We work with teams across Pakistan, including Lahore, Karachi, and Islamabad, for AI automation and chatbot projects.",
+              },
+              {
+                q: "How do I choose the right product?",
+                a: "Start with the product category that matches your workflow, then contact us for guidance or a tailored roadmap.",
+              },
+            ].map((item) => (
+              <div key={item.q} className="rounded-2xl border border-border/40 bg-secondary/30 p-5">
+                <p className="text-sm font-semibold text-foreground">{item.q}</p>
+                <p className="mt-2 text-sm text-muted-foreground">{item.a}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            mainEntity: [
+              {
+                "@type": "Question",
+                name: "Do you offer AI automation services alongside these products?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. Many teams start with a product and later request workflow automation for businesses or custom AI assistant for business needs.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Can I request WhatsApp chatbot development or AI customer support chatbot features?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Absolutely. We can extend select products or build custom solutions such as WhatsApp chatbot development and AI chatbot development for websites.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "Do you serve clients in Pakistan?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Yes. We work with teams across Pakistan, including Lahore, Karachi, and Islamabad, for AI automation and chatbot projects.",
+                },
+              },
+              {
+                "@type": "Question",
+                name: "How do I choose the right product?",
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: "Start with the product category that matches your workflow, then contact us for guidance or a tailored roadmap.",
+                },
+              },
+            ],
+          }),
+        }}
+      />
     </main>
   )
 }

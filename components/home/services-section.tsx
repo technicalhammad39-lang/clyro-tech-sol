@@ -19,36 +19,42 @@ const services = [
     title: "AI Development",
     description: "Custom AI solutions powered by GPT-4, Claude, and proprietary models.",
     features: ["Machine Learning", "Natural Language Processing", "Computer Vision"],
+    href: "/services/ai-chatbot-development",
   },
   {
     icon: Code2,
     title: "SaaS Development",
     description: "Full-stack SaaS applications with modern architecture and scalability.",
     features: ["Multi-tenancy", "Subscription Billing", "Analytics Dashboard"],
+    href: "/services/ai-automation",
   },
   {
     icon: Smartphone,
     title: "Mobile Apps",
     description: "Native and cross-platform mobile applications for iOS and Android.",
     features: ["React Native", "Flutter", "Native iOS/Android"],
+    href: "/services/graphic-design",
   },
   {
     icon: Globe,
     title: "Web Development",
     description: "High-performance websites and web applications with cutting-edge tech.",
     features: ["Next.js", "React", "Headless CMS"],
+    href: "/services/ai-automation",
   },
   {
     icon: Database,
     title: "Backend & API",
     description: "Scalable backend systems and RESTful/GraphQL APIs.",
     features: ["Node.js", "Python", "Cloud Infrastructure"],
+    href: "/services/ai-automation",
   },
   {
     icon: Bot,
     title: "Automation",
     description: "Intelligent automation solutions to streamline your workflows.",
     features: ["Process Automation", "Chatbots", "Integration"],
+    href: "/services/ai-automation",
   },
 ]
 
@@ -118,7 +124,7 @@ function ServiceCard({ service, index }: { service: typeof services[0]; index: n
 
       {/* Link */}
       <Link
-        href="/services"
+        href={service.href}
         className="inline-flex items-center gap-2 text-sm text-primary hover:text-foreground transition-colors group/link"
       >
         Learn more

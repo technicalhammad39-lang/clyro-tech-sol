@@ -1,47 +1,44 @@
 import type { MetadataRoute } from "next"
-import { products as productCatalog } from "@/lib/products"
+import { products } from "@/lib/products"
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://clyrotechsol.site"
+  const siteUrl = "https://www.clyrotechsol.site"
 
-  // Static pages
-  const staticPages = [
-    "",
+  const staticRoutes = [
     "/products",
-    "/services",
     "/ai-lab",
-    "/custom-project",
+    "/team",
+    "/terms",
+    "/privacy",
     "/contact",
-    "/blog",
-  ].map((route) => ({
-    url: `${baseUrl}${route}`,
+    "/services",
+    "/services/ai-chatbot-development",
+    "/services/ai-automation",
+    "/services/voice-assistants",
+    "/services/graphic-design",
+    "/usage-policy",
+    "/legal/refund",
+    "/legal/jarvis-terms",
+  ].map((path) => ({
+    url: `${siteUrl}${path}`,
     lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: route === "" ? 1 : 0.8,
   }))
 
-  // Blog posts - In production, fetch from CMS/database
-  const blogPosts = [
-    "building-scalable-saas-applications",
-    "ai-integration-best-practices",
-    "choosing-tech-stack-2024",
-    "monetization-strategies-saas",
-    "api-design-principles",
-    "future-of-no-code-ai",
-  ].map((slug) => ({
-    url: `${baseUrl}/blog/${slug}`,
-    lastModified: new Date(),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }))
+  const productRoutes = products
+    .filter((product) => product.isPublished !== false)
+    .map((product) => ({
+      url: `${siteUrl}/products/${product.slug}`,
+      lastModified: new Date(),
+    }))
 
-  const products = productCatalog.map((product) => ({
-    url: `${baseUrl}/products/${product.slug}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly" as const,
-    priority: 0.6,
-  }))
+  const allRoutes = [
+    {
+      url: siteUrl,
+      lastModified: new Date(),
+    },
+    ...staticRoutes,
+    ...productRoutes,
+  ]
 
-  return [...staticPages, ...blogPosts, ...products]
+  return allRoutes
 }
-
